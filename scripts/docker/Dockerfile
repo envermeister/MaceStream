@@ -41,7 +41,8 @@ RUN rm -rf /usr/lib/python3.10/config-3.10-x86_64-linux-gnu \
       /usr/lib/x86_64-linux-gnu/ldscripts \
     && find /usr/lib/x86_64-linux-gnu -type f -name '*.a' -delete \
     && find /usr/lib/x86_64-linux-gnu -type l -name '*.a' -delete \
-    && rm -f /usr/lib/python3.10/sitecustomize.py \
+    && rm -f /opt/acestream/data/webui/cert/engine.pem \
+      /usr/lib/python3.10/sitecustomize.py \
       /usr/lib/x86_64-linux-gnu/sitecustomize.py \
       /usr/lib/x86_64-linux-gnu/libasan.so* \
       /usr/lib/x86_64-linux-gnu/libtsan.so* \

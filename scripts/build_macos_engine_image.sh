@@ -97,4 +97,9 @@ if [ ! -s "$ENGINE_ROOT/vfkit" ]; then
   printf 'Could not build engine artifact: vfkit\n' >&2
   exit 1
 fi
+rm -f "$OUTPUT_DIR/runtime/opt/acestream/data/webui/cert/engine.pem"
+if find "$OUTPUT_DIR/runtime/opt/acestream/data" -name '*.pem' -exec grep -l 'PRIVATE KEY' {} + | grep -q .; then
+  printf 'Private key material found in the engine data. Refusing to package it.\n' >&2
+  exit 1
+fi
 printf 'MaceStream %s engine files are ready: %s\n' "$TARGET_ARCH" "$OUTPUT_DIR"

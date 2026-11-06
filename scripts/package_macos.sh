@@ -92,6 +92,12 @@ if [ ! -d "$APP_PATH" ]; then
   printf 'Built app not found: %s\n' "$APP_PATH" >&2
   exit 1
 fi
+find "$APP_PATH/Contents/Resources/Engine" -path '*/data/webui/cert/engine.pem' -delete
+if find "$APP_PATH/Contents/Resources/Engine" -name '*.pem' -exec grep -l 'PRIVATE KEY' {} + | grep -q .; then
+  printf 'Private key material found in the app bundle. Refusing to sign or distribute it.\n' >&2
+  exit 1
+fi
+
 mkdir -p "$APP_PATH/Contents/Resources/Legal"
 cp "$ROOT_DIR/THIRD_PARTY_NOTICES.md" "$APP_PATH/Contents/Resources/Legal/"
 cp "$ROOT_DIR/LICENSE" "$APP_PATH/Contents/Resources/Legal/"

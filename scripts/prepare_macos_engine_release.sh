@@ -29,6 +29,11 @@ case "$ARCHITECTURES" in
   *) printf 'A universal vfkit binary is required: %s\n' "$ARCHITECTURES" >&2; exit 1 ;;
 esac
 
+if find "$ENGINE_SOURCE" -name '*.pem' -exec grep -l 'PRIVATE KEY' {} + | grep -q .; then
+  printf 'Private key material found in the engine. Remove it before creating a release archive.\n' >&2
+  exit 1
+fi
+
 mkdir -p "$OUTPUT_DIR"
 rm -f "$ARCHIVE_PATH" "$ARCHIVE_PATH.sha256"
 (

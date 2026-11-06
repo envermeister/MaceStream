@@ -15,6 +15,7 @@ The optional generated application bundle contains the following separate compon
 - Project: https://acestream.media/
 - Download: the official Ubuntu 22.04 x86_64 package, pinned by URL and SHA-256 in `scripts/docker/Dockerfile`.
 - AceStream is third-party software and is not covered by MaceStream's source license.
+- The upstream `data/webui/cert/engine.pem` file is deliberately removed because it contains private key material. The engine regenerates its local certificate as needed; no private key is shipped in MaceStream releases.
 
 **Review AceStream's current license and redistribution terms before publishing a DMG that embeds the engine.** Excluding generated binaries from this repository does not grant redistribution permission for release packages. If permission is not available, distribute only the source and let each user obtain the engine under terms applicable to them.
 
