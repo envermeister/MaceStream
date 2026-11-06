@@ -23,7 +23,7 @@
 
 ---
 
-MaceStream plays the AceStream links **you** provide — without turning into a channel catalog, a search service, or a background data-collection machine. No Flutter, no Electron, no VLC installation, no external AceStream setup, and no Docker required for everyday use.
+MaceStream plays the AceStream links **you** provide — without turning into a channel catalog, a search service, or a background data-collection machine. No external AceStream setup, no VLC installation, and no Docker required for everyday use.
 
 ## Walkthrough
 
