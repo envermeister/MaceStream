@@ -1,0 +1,479 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		200000000000000000000001 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000001 /* AppDelegate.swift */; };
+		200000000000000000000002 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000002 /* AppEnvironment.swift */; };
+		200000000000000000000003 /* MaceStreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000003 /* MaceStreamApp.swift */; };
+		200000000000000000000004 /* AceStreamLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000004 /* AceStreamLink.swift */; };
+		200000000000000000000005 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000005 /* AppSettings.swift */; };
+		200000000000000000000006 /* EngineStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000006 /* EngineStatus.swift */; };
+		200000000000000000000007 /* HistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000007 /* HistoryItem.swift */; };
+		200000000000000000000008 /* PlaybackStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000008 /* PlaybackStats.swift */; };
+		200000000000000000000009 /* StreamSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000009 /* StreamSession.swift */; };
+		200000000000000000000010 /* NativeVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000010 /* NativeVideoView.swift */; };
+		200000000000000000000011 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000011 /* PlaybackController.swift */; };
+		200000000000000000000012 /* AceStreamClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000012 /* AceStreamClient.swift */; };
+		200000000000000000000013 /* EngineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000013 /* EngineController.swift */; };
+		200000000000000000000014 /* HistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000014 /* HistoryStore.swift */; };
+		200000000000000000000015 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000015 /* SettingsStore.swift */; };
+		200000000000000000000016 /* SupportPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000016 /* SupportPaths.swift */; };
+		200000000000000000000017 /* TCPRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000017 /* TCPRelay.swift */; };
+		200000000000000000000018 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000018 /* ContentView.swift */; };
+		200000000000000000000019 /* HistorySidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000019 /* HistorySidebarView.swift */; };
+		200000000000000000000020 /* LinkEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000020 /* LinkEntryView.swift */; };
+		200000000000000000000021 /* PlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000021 /* PlayerControlsView.swift */; };
+		200000000000000000000022 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000022 /* PlayerView.swift */; };
+		200000000000000000000023 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000023 /* SettingsView.swift */; };
+		200000000000000000000024 /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000024 /* StatusBarView.swift */; };
+		200000000000000000000025 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000025 /* Theme.swift */; };
+		200000000000000000000026 /* AceStreamClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000026 /* AceStreamClientTests.swift */; };
+		200000000000000000000027 /* AceStreamLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000027 /* AceStreamLinkTests.swift */; };
+		200000000000000000000028 /* AppSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000028 /* AppSettingsTests.swift */; };
+		200000000000000000000029 /* HistoryStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000029 /* HistoryStoreTests.swift */; };
+		200000000000000000000030 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000030 /* Assets.xcassets */; };
+		200000000000000000000031 /* Engine in Resources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000031 /* Engine */; };
+		200000000000000000000032 /* PlaybackControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000036 /* PlaybackControllerTests.swift */; };
+		200000000000000000000033 /* CaptureArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000037 /* CaptureArtworkView.swift */; };
+		200000000000000000000034 /* CaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000038 /* CaptureController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		800000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 900000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 400000000000000000000001;
+			remoteInfo = MaceStream;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		100000000000000000000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		100000000000000000000002 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		100000000000000000000003 /* MaceStreamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaceStreamApp.swift; sourceTree = "<group>"; };
+		100000000000000000000004 /* AceStreamLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AceStreamLink.swift; sourceTree = "<group>"; };
+		100000000000000000000005 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		100000000000000000000006 /* EngineStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineStatus.swift; sourceTree = "<group>"; };
+		100000000000000000000007 /* HistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItem.swift; sourceTree = "<group>"; };
+		100000000000000000000008 /* PlaybackStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackStats.swift; sourceTree = "<group>"; };
+		100000000000000000000009 /* StreamSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamSession.swift; sourceTree = "<group>"; };
+		100000000000000000000010 /* NativeVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeVideoView.swift; sourceTree = "<group>"; };
+		100000000000000000000011 /* PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
+		100000000000000000000012 /* AceStreamClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AceStreamClient.swift; sourceTree = "<group>"; };
+		100000000000000000000013 /* EngineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineController.swift; sourceTree = "<group>"; };
+		100000000000000000000014 /* HistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStore.swift; sourceTree = "<group>"; };
+		100000000000000000000015 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		100000000000000000000016 /* SupportPaths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportPaths.swift; sourceTree = "<group>"; };
+		100000000000000000000017 /* TCPRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCPRelay.swift; sourceTree = "<group>"; };
+		100000000000000000000018 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		100000000000000000000019 /* HistorySidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorySidebarView.swift; sourceTree = "<group>"; };
+		100000000000000000000020 /* LinkEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkEntryView.swift; sourceTree = "<group>"; };
+		100000000000000000000021 /* PlayerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControlsView.swift; sourceTree = "<group>"; };
+		100000000000000000000022 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		100000000000000000000023 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		100000000000000000000024 /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
+		100000000000000000000025 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		100000000000000000000026 /* AceStreamClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AceStreamClientTests.swift; sourceTree = "<group>"; };
+		100000000000000000000027 /* AceStreamLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AceStreamLinkTests.swift; sourceTree = "<group>"; };
+		100000000000000000000028 /* AppSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTests.swift; sourceTree = "<group>"; };
+		100000000000000000000029 /* HistoryStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStoreTests.swift; sourceTree = "<group>"; };
+		100000000000000000000030 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		100000000000000000000031 /* Engine */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Engine; sourceTree = "<group>"; };
+		100000000000000000000032 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		100000000000000000000033 /* MaceStream.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MaceStream.entitlements; sourceTree = "<group>"; };
+		100000000000000000000034 /* MaceStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MaceStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		100000000000000000000035 /* MaceStreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MaceStreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		100000000000000000000036 /* PlaybackControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControllerTests.swift; sourceTree = "<group>"; };
+		100000000000000000000037 /* CaptureArtworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureArtworkView.swift; sourceTree = "<group>"; };
+		100000000000000000000038 /* CaptureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		500000000000000000000002 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		500000000000000000000005 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		300000000000000000000000 = {
+			isa = PBXGroup;
+			children = (
+				300000000000000000000001 /* MaceStream */,
+				300000000000000000000002 /* MaceStreamTests */,
+				300000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		300000000000000000000001 /* MaceStream */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000001 /* AppDelegate.swift */,
+				100000000000000000000002 /* AppEnvironment.swift */,
+				100000000000000000000003 /* MaceStreamApp.swift */,
+				300000000000000000000004 /* Models */,
+				300000000000000000000005 /* Playback */,
+				300000000000000000000009 /* Capture */,
+				300000000000000000000006 /* Services */,
+				300000000000000000000007 /* Views */,
+				300000000000000000000008 /* Resources */,
+				100000000000000000000032 /* Info.plist */,
+				100000000000000000000033 /* MaceStream.entitlements */,
+			);
+			path = MaceStream;
+			sourceTree = "<group>";
+		};
+		300000000000000000000002 /* MaceStreamTests */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000026 /* AceStreamClientTests.swift */,
+				100000000000000000000027 /* AceStreamLinkTests.swift */,
+				100000000000000000000028 /* AppSettingsTests.swift */,
+				100000000000000000000029 /* HistoryStoreTests.swift */,
+				100000000000000000000036 /* PlaybackControllerTests.swift */,
+			);
+			path = MaceStreamTests;
+			sourceTree = "<group>";
+		};
+		300000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000034 /* MaceStream.app */,
+				100000000000000000000035 /* MaceStreamTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		300000000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000004 /* AceStreamLink.swift */,
+				100000000000000000000005 /* AppSettings.swift */,
+				100000000000000000000006 /* EngineStatus.swift */,
+				100000000000000000000007 /* HistoryItem.swift */,
+				100000000000000000000008 /* PlaybackStats.swift */,
+				100000000000000000000009 /* StreamSession.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		300000000000000000000005 /* Playback */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000010 /* NativeVideoView.swift */,
+				100000000000000000000011 /* PlaybackController.swift */,
+			);
+			path = Playback;
+			sourceTree = "<group>";
+		};
+		300000000000000000000006 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000012 /* AceStreamClient.swift */,
+				100000000000000000000013 /* EngineController.swift */,
+				100000000000000000000014 /* HistoryStore.swift */,
+				100000000000000000000015 /* SettingsStore.swift */,
+				100000000000000000000016 /* SupportPaths.swift */,
+				100000000000000000000017 /* TCPRelay.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		300000000000000000000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000018 /* ContentView.swift */,
+				100000000000000000000019 /* HistorySidebarView.swift */,
+				100000000000000000000020 /* LinkEntryView.swift */,
+				100000000000000000000021 /* PlayerControlsView.swift */,
+				100000000000000000000022 /* PlayerView.swift */,
+				100000000000000000000023 /* SettingsView.swift */,
+				100000000000000000000024 /* StatusBarView.swift */,
+				100000000000000000000025 /* Theme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		300000000000000000000009 /* Capture */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000037 /* CaptureArtworkView.swift */,
+				100000000000000000000038 /* CaptureController.swift */,
+			);
+			path = Capture;
+			sourceTree = "<group>";
+		};
+		300000000000000000000008 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000030 /* Assets.xcassets */,
+				100000000000000000000031 /* Engine */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		400000000000000000000001 /* MaceStream */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 600000000000000000000002 /* Build configuration list for PBXNativeTarget "MaceStream" */;
+			buildPhases = (
+				500000000000000000000001 /* Sources */,
+				500000000000000000000002 /* Frameworks */,
+				500000000000000000000003 /* Resources */,
+			);
+			buildRules = ();
+			dependencies = ();
+			name = MaceStream;
+			productName = MaceStream;
+			productReference = 100000000000000000000034 /* MaceStream.app */;
+			productType = "com.apple.product-type.application";
+		};
+		400000000000000000000002 /* MaceStreamTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 600000000000000000000003 /* Build configuration list for PBXNativeTarget "MaceStreamTests" */;
+			buildPhases = (
+				500000000000000000000004 /* Sources */,
+				500000000000000000000005 /* Frameworks */,
+				500000000000000000000006 /* Resources */,
+			);
+			buildRules = ();
+			dependencies = (
+				800000000000000000000002 /* PBXTargetDependency */,
+			);
+			name = MaceStreamTests;
+			productName = MaceStreamTests;
+			productReference = 100000000000000000000035 /* MaceStreamTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		900000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					400000000000000000000001 = { CreatedOnToolsVersion = 27.2; };
+					400000000000000000000002 = { CreatedOnToolsVersion = 27.2; TestTargetID = 400000000000000000000001; };
+				};
+			};
+			buildConfigurationList = 600000000000000000000001 /* Build configuration list for PBXProject "MaceStream" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (Base, en);
+			mainGroup = 300000000000000000000000;
+			productRefGroup = 300000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				400000000000000000000001 /* MaceStream */,
+				400000000000000000000002 /* MaceStreamTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		500000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				200000000000000000000030 /* Assets.xcassets in Resources */,
+				200000000000000000000031 /* Engine in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		500000000000000000000006 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		500000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				200000000000000000000001 /* AppDelegate.swift in Sources */,
+				200000000000000000000002 /* AppEnvironment.swift in Sources */,
+				200000000000000000000003 /* MaceStreamApp.swift in Sources */,
+				200000000000000000000004 /* AceStreamLink.swift in Sources */,
+				200000000000000000000005 /* AppSettings.swift in Sources */,
+				200000000000000000000006 /* EngineStatus.swift in Sources */,
+				200000000000000000000007 /* HistoryItem.swift in Sources */,
+				200000000000000000000008 /* PlaybackStats.swift in Sources */,
+				200000000000000000000009 /* StreamSession.swift in Sources */,
+				200000000000000000000010 /* NativeVideoView.swift in Sources */,
+				200000000000000000000011 /* PlaybackController.swift in Sources */,
+				200000000000000000000012 /* AceStreamClient.swift in Sources */,
+				200000000000000000000013 /* EngineController.swift in Sources */,
+				200000000000000000000014 /* HistoryStore.swift in Sources */,
+				200000000000000000000015 /* SettingsStore.swift in Sources */,
+				200000000000000000000016 /* SupportPaths.swift in Sources */,
+				200000000000000000000017 /* TCPRelay.swift in Sources */,
+				200000000000000000000018 /* ContentView.swift in Sources */,
+				200000000000000000000019 /* HistorySidebarView.swift in Sources */,
+				200000000000000000000020 /* LinkEntryView.swift in Sources */,
+				200000000000000000000021 /* PlayerControlsView.swift in Sources */,
+				200000000000000000000022 /* PlayerView.swift in Sources */,
+				200000000000000000000023 /* SettingsView.swift in Sources */,
+				200000000000000000000024 /* StatusBarView.swift in Sources */,
+				200000000000000000000025 /* Theme.swift in Sources */,
+				200000000000000000000033 /* CaptureArtworkView.swift in Sources */,
+				200000000000000000000034 /* CaptureController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		500000000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				200000000000000000000026 /* AceStreamClientTests.swift in Sources */,
+				200000000000000000000027 /* AceStreamLinkTests.swift in Sources */,
+				200000000000000000000028 /* AppSettingsTests.swift in Sources */,
+				200000000000000000000029 /* HistoryStoreTests.swift in Sources */,
+				200000000000000000000032 /* PlaybackControllerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		800000000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 400000000000000000000001 /* MaceStream */;
+			targetProxy = 800000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		700000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1", "$(inherited)");
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		700000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		700000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MaceStream/MaceStream.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MaceStream/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks");
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.macestream.player;
+				PRODUCT_NAME = MaceStream;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+			};
+			name = Debug;
+		};
+		700000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MaceStream/MaceStream.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MaceStream/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks");
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.macestream.player;
+				PRODUCT_NAME = MaceStream;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+			};
+			name = Release;
+		};
+		700000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.macestream.player.tests;
+				PRODUCT_NAME = MaceStreamTests;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MaceStream.app/Contents/MacOS/MaceStream";
+			};
+			name = Debug;
+		};
+		700000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.macestream.player.tests;
+				PRODUCT_NAME = MaceStreamTests;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MaceStream.app/Contents/MacOS/MaceStream";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		600000000000000000000001 /* Build configuration list for PBXProject "MaceStream" */ = {isa = XCConfigurationList; buildConfigurations = (700000000000000000000001 /* Debug */, 700000000000000000000002 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		600000000000000000000002 /* Build configuration list for PBXNativeTarget "MaceStream" */ = {isa = XCConfigurationList; buildConfigurations = (700000000000000000000003 /* Debug */, 700000000000000000000004 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		600000000000000000000003 /* Build configuration list for PBXNativeTarget "MaceStreamTests" */ = {isa = XCConfigurationList; buildConfigurations = (700000000000000000000005 /* Debug */, 700000000000000000000006 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = 900000000000000000000001 /* Project object */;
+}

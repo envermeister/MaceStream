@@ -1,0 +1,35 @@
+# Xcode
+.build/
+DerivedData/
+build/
+*.xcuserdata/
+xcuserdata/
+*.xcuserstate
+*.moved-aside
+
+# macOS
+.DS_Store
+
+# Python build helpers
+__pycache__/
+*.py[cod]
+
+# Local engine artifacts, caches and packages
+/MaceStream/Resources/Engine/mac/
+/MaceStream/Resources/Engine/arm64/
+/MaceStream/Resources/Engine/x86_64/
+/MaceStream/Resources/Engine/vfkit*
+/.cache/
+/dist/
+/.diagnostics/
+
+# Signing material and local configuration
+*.p12
+*.pfx
+*.mobileprovision
+.env
+
+# Archives
+*.dmg
+*.tar.gz
+*.tar.gz.sha256

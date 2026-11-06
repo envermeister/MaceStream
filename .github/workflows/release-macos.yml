@@ -1,0 +1,103 @@
+name: macOS Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing vX.Y.Z tag to build
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+  ENGINE_ARCHIVE: macestream-engine-macos-universal-v1.tar.gz
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
+
+      - name: Validate release tag
+        run: |
+          VERSION=$(awk '/MARKETING_VERSION = / { gsub(/;/, "", $3); print $3; exit }' MaceStream.xcodeproj/project.pbxproj)
+          if [ "$RELEASE_TAG" != "v$VERSION" ]; then
+            echo "Tag $RELEASE_TAG does not match project version v$VERSION" >&2
+            exit 1
+          fi
+
+      - name: Test
+        run: |
+          xcodebuild -project MaceStream.xcodeproj \
+            -scheme MaceStream \
+            -configuration Debug \
+            -destination 'platform=macOS' \
+            -derivedDataPath .build/DerivedData \
+            CODE_SIGNING_ALLOWED=YES \
+            CODE_SIGN_IDENTITY=- \
+            test
+
+      - name: Download and verify engine
+        run: |
+          mkdir -p .cache/engine-release
+          gh release download engine-macos-v1 \
+            --pattern "$ENGINE_ARCHIVE" \
+            --pattern "$ENGINE_ARCHIVE.sha256" \
+            --dir .cache/engine-release
+          (cd .cache/engine-release && shasum -a 256 -c "$ENGINE_ARCHIVE.sha256")
+          tar -xzf ".cache/engine-release/$ENGINE_ARCHIVE" \
+            -C MaceStream/Resources
+
+      - name: Import Developer ID certificate
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          CERTIFICATE_PATH="$RUNNER_TEMP/DeveloperID.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/MaceStream.keychain-db"
+          KEYCHAIN_PASSWORD=$(openssl rand -hex 32)
+          printf '%s' "$CERTIFICATE_BASE64" | base64 -D -o "$CERTIFICATE_PATH"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERTIFICATE_PATH" \
+            -k "$KEYCHAIN_PATH" \
+            -P "$CERTIFICATE_PASSWORD" \
+            -T /usr/bin/codesign \
+            -T /usr/bin/security
+          security set-key-partition-list \
+            -S apple-tool:,apple:,codesign: \
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | tr -d '"')
+          security default-keychain -d user -s "$KEYCHAIN_PATH"
+          echo "MACESTREAM_CI_KEYCHAIN=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+
+      - name: Build, sign and notarize
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          MACOS_SIGNING_IDENTITY: ${{ secrets.MACOS_SIGNING_IDENTITY }}
+        run: ./scripts/package_macos.sh
+
+      - name: Publish release asset
+        run: |
+          VERSION=${RELEASE_TAG#v}
+          DMG="dist/MaceStream-$VERSION-macOS-universal.dmg"
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" \
+              --title "MaceStream $VERSION" \
+              --generate-notes
+          fi
+          gh release upload "$RELEASE_TAG" "$DMG" --clobber
