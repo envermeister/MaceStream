@@ -19,6 +19,8 @@
   <img src="https://img.shields.io/badge/ARM64%20%2B%20x86__64-universal-blue" alt="Universal binary">
   <img src="https://img.shields.io/badge/tests-17%20passed-brightgreen" alt="17 tests passed">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
+  <a href="https://buymeacoffee.com/envermeister"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support%20MaceStream-FFDD00?logo=buy-me-a-coffee&logoColor=black" alt="Support on Buy Me a Coffee"></a>
+  <a href="https://ko-fi.com/envermeister"><img src="https://img.shields.io/badge/Ko--fi-support%20MaceStream-F16061?logo=ko-fi&logoColor=white" alt="Support on Ko-fi"></a>
 </p>
 
 ---
@@ -165,6 +167,10 @@ Capture mode uses isolated sample data and does not read or modify your real his
 MaceStream includes no analytics, advertising, accounts, remote channel lists, or search service. AceStream is peer-to-peer: peers and your network provider can see network activity and your IP address. Only access content you have the right to use.
 
 Read [PRIVACY.md](PRIVACY.md) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before distributing a package. Engine binaries retain their separate licenses and redistribution terms.
+
+## Support the project
+
+MaceStream is free and open source, built in spare time. If it makes watching your streams a little easier, you can support development on [Buy Me a Coffee](https://buymeacoffee.com/envermeister) or [Ko-fi](https://ko-fi.com/envermeister). One-off or monthly support helps keep the commits coming.
 
 ## License
 
