@@ -105,7 +105,7 @@ cp -R "$ROOT_DIR/licenses" "$APP_PATH/Contents/Resources/Legal/"
 
 APP_VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP_PATH/Contents/Info.plist")
 BUILD_NUMBER=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/Contents/Info.plist")
-if [[ ! "$APP_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || [[ ! "$BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
+if [[ ! "$APP_VERSION" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]] || [[ ! "$BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
   printf 'Invalid app version or build number.\n' >&2
   exit 1
 fi

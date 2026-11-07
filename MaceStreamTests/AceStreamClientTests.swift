@@ -30,7 +30,7 @@ final class AceStreamClientTests: XCTestCase {
     func testPlaybackURLsAreMovedToDynamicLoopbackPort() async throws {
         MockURLProtocol.responder = { request in
             let json = """
-            {"response":{"playback_url":"http://192.168.64.2:6878/ace/m/stream","stat_url":"/ace/stat?pid=abc","command_url":"http://127.0.0.1:6878/ace/cmd?pid=abc"}}
+            {"response":{"playback_url":"http://192.168.64.2:6878/ace/r/stream","stat_url":"/ace/stat?pid=abc","command_url":"http://127.0.0.1:6878/ace/cmd?pid=abc"},"error":null}
             """
             return try self.respond(request, json: json)
         }
@@ -40,11 +40,10 @@ final class AceStreamClientTests: XCTestCase {
         )
         XCTAssertEqual(stream.playbackURL.host(), "127.0.0.1")
         XCTAssertEqual(stream.playbackURL.port, 23456)
-        XCTAssertEqual(stream.playbackURL.path, "/ace/m/stream")
+        XCTAssertEqual(stream.playbackURL.path, "/ace/r/stream")
         XCTAssertEqual(stream.statisticsURL?.host(), "127.0.0.1")
         XCTAssertEqual(stream.statisticsURL?.port, 23456)
         XCTAssertEqual(stream.commandURL?.port, 23456)
-        XCTAssertFalse(stream.usesManifestFallback)
     }
 
     func testStatisticsResponse() async throws {

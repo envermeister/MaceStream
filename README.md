@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/macOS-13%2B-black?logo=apple" alt="macOS 13+">
   <img src="https://img.shields.io/badge/Swift-native-F05138?logo=swift&logoColor=white" alt="Swift native">
   <img src="https://img.shields.io/badge/ARM64%20%2B%20x86__64-universal-blue" alt="Universal binary">
-  <img src="https://img.shields.io/badge/tests-17%20passed-brightgreen" alt="17 tests passed">
+  <img src="https://img.shields.io/badge/tests-28%20passed-brightgreen" alt="28 tests passed">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
   <a href="https://buymeacoffee.com/envermeister"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support%20MaceStream-FFDD00?logo=buy-me-a-coffee&logoColor=black" alt="Support on Buy Me a Coffee"></a>
   <a href="https://ko-fi.com/envermeister"><img src="https://img.shields.io/badge/Ko--fi-support%20MaceStream-F16061?logo=ko-fi&logoColor=white" alt="Support on Ko-fi"></a>
@@ -91,7 +91,7 @@ acestream:// link
   SwiftUI / AppKit
         │
         ▼
-  PlaybackController ─────── AVPlayer / AVPlayerLayer
+  PlaybackController ── Local HLS ── AVPlayer / AVPlayerLayer
         │
         ▼
   127.0.0.1:<ephemeral>
@@ -110,6 +110,8 @@ acestream:// link
 ```
 
 The Linux guest and its helper proxy are engine infrastructure. The native macOS application itself is Swift and Apple frameworks only.
+
+For playback, MaceStream bypasses the engine's unreliable HLS generator. It reads the raw `/ace/getstream` MPEG-TS response, synchronizes 188-byte packets, and creates short HLS segments at video random-access points using presentation timestamps. PAT/PMT tables are repeated at each segment boundary, with native DVB PSI normalization for private AC-3/E-AC-3 audio and conditional-access metadata when required. A bounded, loopback-only server provides the playlist and segments to AVPlayer; no transcoding, external media framework, or fixed local port is involved.
 
 ## Requirements
 

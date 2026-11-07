@@ -22,5 +22,4 @@ struct StreamSession: Equatable, Sendable {
     let playbackURL: URL
     let statisticsURL: URL?
     let commandURL: URL?
-    let usesManifestFallback: Bool
 }

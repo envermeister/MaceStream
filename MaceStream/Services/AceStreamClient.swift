@@ -43,27 +43,19 @@ struct AceStreamClient: Sendable {
             ]
         )
 
-        do {
-            let data = try await getJSON(url, timeout: 20)
-            if let error = data["error"], !String(describing: error).isEmpty {
-                throw AceStreamClientError.engine(String(describing: error))
+        let data = try await getJSON(url, timeout: 20)
+        if let error = data["error"], !(error is NSNull) {
+            let message = String(describing: error).trimmingCharacters(in: .whitespacesAndNewlines)
+            if !message.isEmpty {
+                throw AceStreamClientError.engine(message)
             }
-            return try session(
-                from: data,
-                contentID: contentID,
-                processID: processID,
-                endpoint: endpoint,
-                fallback: false
-            )
-        } catch {
-            try Task.checkCancellation()
-            if Task.isCancelled { throw CancellationError() }
-            return try await manifestFallback(
-                contentID: contentID,
-                processID: processID,
-                endpoint: endpoint
-            )
         }
+        return try session(
+            from: data,
+            contentID: contentID,
+            processID: processID,
+            endpoint: endpoint
+        )
     }
 
     func fetchStatistics(url: URL) async throws -> PlaybackStats {
@@ -107,50 +99,11 @@ struct AceStreamClient: Sendable {
         _ = try? await self.session.data(for: request)
     }
 
-    private func manifestFallback(
-        contentID: String,
-        processID: String,
-        endpoint: EngineEndpoint
-    ) async throws -> StreamSession {
-        let manifestURL = endpoint.url(
-            path: "/ace/manifest.m3u8",
-            queryItems: [
-                URLQueryItem(name: "id", value: contentID),
-                URLQueryItem(name: "format", value: "json"),
-                URLQueryItem(name: "pid", value: processID)
-            ]
-        )
-
-        if let data = try? await getJSON(manifestURL, timeout: 20),
-           let session = try? session(
-               from: data,
-               contentID: contentID,
-               processID: processID,
-               endpoint: endpoint,
-               fallback: true
-           ) {
-            return session
-        }
-
-        try Task.checkCancellation()
-        var components = URLComponents(url: manifestURL, resolvingAgainstBaseURL: false)!
-        components.queryItems = (components.queryItems ?? []).filter { $0.name != "format" }
-        return StreamSession(
-            contentID: contentID,
-            processID: processID,
-            playbackURL: components.url!,
-            statisticsURL: nil,
-            commandURL: nil,
-            usesManifestFallback: true
-        )
-    }
-
     private func session(
         from data: [String: Any],
         contentID: String,
         processID: String,
-        endpoint: EngineEndpoint,
-        fallback: Bool
+        endpoint: EngineEndpoint
     ) throws -> StreamSession {
         let response = nestedResponse(in: data)
         guard let rawPlaybackURL = response["playback_url"] as? String,
@@ -162,8 +115,7 @@ struct AceStreamClient: Sendable {
             processID: processID,
             playbackURL: try resolve(rawPlaybackURL, endpoint: endpoint),
             statisticsURL: try optionalURL(response["stat_url"], endpoint: endpoint),
-            commandURL: try optionalURL(response["command_url"], endpoint: endpoint),
-            usesManifestFallback: fallback
+            commandURL: try optionalURL(response["command_url"], endpoint: endpoint)
         )
     }
 

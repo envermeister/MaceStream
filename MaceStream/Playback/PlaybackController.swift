@@ -49,6 +49,7 @@ final class PlaybackController: ObservableObject {
     private let client: AceStreamClient
 
     private var session: StreamSession?
+    private var localStream: LocalHLSStream?
     private var playbackTask: Task<Void, Never>?
     private var retryTask: Task<Void, Never>?
     private var statisticsTask: Task<Void, Never>?
@@ -236,15 +237,33 @@ final class PlaybackController: ObservableObject {
             }
             session = newSession
             history.record(link)
-            let item = AVPlayerItem(url: newSession.playbackURL)
-            item.preferredForwardBufferDuration = settings.value.playerBufferSeconds
-            item.canUseNetworkResourcesForLiveStreamingWhilePaused = settings.value.keepsLiveStreamActiveWhilePaused
+            phase = .buffering
+            startStatistics(ticket: ticket)
+            scheduleWatchdog(ticket: ticket, timeout: 90)
+
+            let stream = LocalHLSStream()
+            localStream = stream
+            stream.onFailure = { [weak self, weak stream] error in
+                Task { @MainActor [weak self, weak stream] in
+                    guard let self, let stream,
+                          self.localStream === stream,
+                          self.isCurrent(ticket) else { return }
+                    self.fail(error.localizedDescription, ticket: ticket)
+                }
+            }
+            let playlistURL = try await stream.start(rawURL: newSession.playbackURL)
+            guard isCurrent(ticket) else {
+                stream.stop()
+                await client.stopStream(newSession)
+                return
+            }
+
+            let item = AVPlayerItem(url: playlistURL)
             configure(item)
             observe(item, ticket: ticket)
             player.replaceCurrentItem(with: item)
             phase = .buffering
             player.play()
-            startStatistics(ticket: ticket)
             scheduleWatchdog(ticket: ticket)
         } catch {
             guard isCurrent(ticket) else { return }
@@ -265,6 +284,8 @@ final class PlaybackController: ObservableObject {
         watchdogTask = nil
         stablePlaybackTask?.cancel()
         stablePlaybackTask = nil
+        localStream?.stop()
+        localStream = nil
         detachItem()
         player.pause()
         player.replaceCurrentItem(with: nil)
@@ -459,13 +480,13 @@ final class PlaybackController: ObservableObject {
         }
     }
 
-    private func scheduleWatchdog(ticket: UInt) {
+    private func scheduleWatchdog(ticket: UInt, timeout: UInt64 = 30) {
         watchdogTask?.cancel()
         watchdogTask = Task { [weak self] in
-            try? await Task.sleep(nanoseconds: 30_000_000_000)
+            try? await Task.sleep(nanoseconds: timeout * 1_000_000_000)
             guard !Task.isCancelled, let self, self.isCurrent(ticket) else { return }
             guard self.phase == .connecting || self.phase == .buffering else { return }
-            self.fail("The stream did not provide enough data within 30 seconds.", ticket: ticket)
+            self.fail("The stream did not provide enough data within \(timeout) seconds.", ticket: ticket)
         }
     }
 
@@ -501,6 +522,8 @@ final class PlaybackController: ObservableObject {
         statisticsTask = nil
         stablePlaybackTask?.cancel()
         stablePlaybackTask = nil
+        localStream?.stop()
+        localStream = nil
         detachItem()
         player.pause()
         player.replaceCurrentItem(with: nil)
