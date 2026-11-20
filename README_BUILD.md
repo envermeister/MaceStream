@@ -43,6 +43,8 @@ These generated files are ignored by Git. The current short virtio-fs mount tags
 
 On Apple Silicon the ARM64 Linux kernel boots natively and the official x86_64 AceStream process runs through Linux Rosetta. On Intel both the guest and engine run natively x86_64.
 
+The optional Outpace backend does not use these generated artifacts and is not included in the app package. Its pinned release is downloaded and verified at runtime only after the user selects that backend. `OutpaceInstallerTests` covers archive installation, reuse and checksum rejection with local fixtures; no network access is required by the test suite.
+
 ## 3. Build and test
 
 Open `MaceStream.xcodeproj` directly, or use the command line:

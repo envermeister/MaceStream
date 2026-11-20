@@ -40,6 +40,20 @@ enum BufferProfile: String, Codable, CaseIterable, Identifiable, Sendable {
     }
 }
 
+enum EngineBackend: String, Codable, CaseIterable, Identifiable, Sendable {
+    case official
+    case outpace
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .official: return "AceStream Engine"
+        case .outpace: return "Outpace (public streams)"
+        }
+    }
+}
+
 enum VideoAspectMode: String, Codable, CaseIterable, Sendable {
     case fit
     case fill
@@ -61,6 +75,7 @@ struct AppSettings: Codable, Equatable, Sendable {
     var isMuted: Bool
     var showsStatistics: Bool
     var aspectMode: VideoAspectMode
+    var engineBackend: EngineBackend
 
     static let `default` = AppSettings(
         bufferProfile: .balanced,
@@ -70,7 +85,8 @@ struct AppSettings: Codable, Equatable, Sendable {
         volume: 0.8,
         isMuted: false,
         showsStatistics: true,
-        aspectMode: .fit
+        aspectMode: .fit,
+        engineBackend: .official
     )
 
     var playerBufferSeconds: Double {
@@ -88,7 +104,8 @@ struct AppSettings: Codable, Equatable, Sendable {
         volume: Double,
         isMuted: Bool,
         showsStatistics: Bool,
-        aspectMode: VideoAspectMode
+        aspectMode: VideoAspectMode,
+        engineBackend: EngineBackend = .official
     ) {
         self.bufferProfile = bufferProfile
         self.customBufferSeconds = customBufferSeconds
@@ -98,6 +115,7 @@ struct AppSettings: Codable, Equatable, Sendable {
         self.isMuted = isMuted
         self.showsStatistics = showsStatistics
         self.aspectMode = aspectMode
+        self.engineBackend = engineBackend
     }
 
     init(from decoder: Decoder) throws {
@@ -111,6 +129,7 @@ struct AppSettings: Codable, Equatable, Sendable {
         isMuted = try container.decodeIfPresent(Bool.self, forKey: .isMuted) ?? defaults.isMuted
         showsStatistics = try container.decodeIfPresent(Bool.self, forKey: .showsStatistics) ?? defaults.showsStatistics
         aspectMode = try container.decodeIfPresent(VideoAspectMode.self, forKey: .aspectMode) ?? defaults.aspectMode
+        engineBackend = try container.decodeIfPresent(EngineBackend.self, forKey: .engineBackend) ?? defaults.engineBackend
     }
 }
 

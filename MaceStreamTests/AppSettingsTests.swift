@@ -28,6 +28,14 @@ final class AppSettingsTests: XCTestCase {
         XCTAssertEqual(settings, .default)
     }
 
+    func testEngineBackendRoundTrip() throws {
+        var settings = AppSettings.default
+        XCTAssertEqual(settings.engineBackend, .official)
+        settings.engineBackend = .outpace
+        let data = try JSONEncoder().encode(settings)
+        XCTAssertEqual(try JSONDecoder().decode(AppSettings.self, from: data), settings)
+    }
+
     func testVolumeIsClampedWhileDecoding() throws {
         let settings = try JSONDecoder().decode(AppSettings.self, from: Data("{\"volume\":4}".utf8))
         XCTAssertEqual(settings.volume, 1)

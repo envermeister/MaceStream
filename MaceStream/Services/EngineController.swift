@@ -6,6 +6,8 @@ import Foundation
 final class EngineController: ObservableObject {
     @Published private(set) var status = EngineStatus()
 
+    var backend: EngineBackend = .official
+
     private let paths: SupportPaths
     private let client: AceStreamClient
     private var process: Process?
@@ -36,33 +38,48 @@ final class EngineController: ObservableObject {
 
         status = EngineStatus(
             phase: .starting,
-            message: "Starting AceStream engine",
-            detail: "Preparing isolated Linux environment…"
+            message: backend == .outpace ? "Starting Outpace" : "Starting AceStream engine",
+            detail: backend == .outpace ? "Preparing the native macOS engine…" : "Preparing isolated Linux environment…"
         )
 
         do {
             try paths.createDirectories()
-            let resources = try engineResources()
-            let socketURL = try prepareVsockSocket()
-            try launchEngine(resources: resources, ticket: ticket, socketURL: socketURL)
-            let (relay, port) = try await TCPRelay.start(upstreamSocketPath: socketURL.path)
-            guard ticket == operation else {
-                relay.stop()
-                return
-            }
-            self.relay = relay
-            let endpoint = EngineEndpoint(host: "127.0.0.1", port: port)
-            status.endpoint = endpoint
-            status.detail = "Local bridge: 127.0.0.1:\(port)"
-            healthTask = Task { [weak self] in
-                await self?.monitorHealth(ticket: ticket, endpoint: endpoint)
+            switch backend {
+            case .official:
+                let resources = try engineResources()
+                let socketURL = try prepareVsockSocket()
+                try launchEngine(resources: resources, ticket: ticket, socketURL: socketURL)
+                let (relay, port) = try await TCPRelay.start(upstreamSocketPath: socketURL.path)
+                guard ticket == operation else {
+                    relay.stop()
+                    return
+                }
+                self.relay = relay
+                let endpoint = EngineEndpoint(host: "127.0.0.1", port: port)
+                status.endpoint = endpoint
+                status.detail = "Local bridge: 127.0.0.1:\(port)"
+                healthTask = Task { [weak self] in
+                    await self?.monitorHealth(ticket: ticket, endpoint: endpoint)
+                }
+            case .outpace:
+                status.detail = "Checking the Outpace installation…"
+                let executable = try await OutpaceInstaller(paths: paths).install()
+                guard ticket == operation else { return }
+                let port = try availablePort()
+                let endpoint = EngineEndpoint(host: "127.0.0.1", port: port)
+                try launchOutpace(executable: executable, port: port, ticket: ticket)
+                status.endpoint = endpoint
+                status.detail = "Native process: 127.0.0.1:\(port)"
+                healthTask = Task { [weak self] in
+                    await self?.monitorHealth(ticket: ticket, endpoint: endpoint)
+                }
             }
         } catch {
             guard ticket == operation else { return }
             await releaseResources()
             status = EngineStatus(
                 phase: .failed,
-                message: "Engine failed to start",
+                message: backend == .outpace ? "Outpace failed to start" : "Engine failed to start",
                 detail: error.localizedDescription,
                 endpoint: status.endpoint
             )
@@ -87,8 +104,9 @@ final class EngineController: ObservableObject {
         await enqueue {
             await self.performStop()
             do {
-                if FileManager.default.fileExists(atPath: self.paths.cacheDirectory.path) {
-                    try FileManager.default.removeItem(at: self.paths.cacheDirectory)
+                let cacheURL = self.backend == .outpace ? self.paths.outpaceDataDirectory : self.paths.cacheDirectory
+                if FileManager.default.fileExists(atPath: cacheURL.path) {
+                    try FileManager.default.removeItem(at: cacheURL)
                 }
                 try self.paths.createDirectories()
             } catch {
@@ -121,7 +139,7 @@ final class EngineController: ObservableObject {
 
     func revealLogs() {
         try? paths.createDirectories()
-        NSWorkspace.shared.activateFileViewerSelecting([paths.engineLogURL])
+        NSWorkspace.shared.activateFileViewerSelecting([backend == .outpace ? paths.outpaceLogURL : paths.engineLogURL])
     }
 
     private func enqueue(_ work: @escaping @MainActor () async -> Void) async {
@@ -188,6 +206,70 @@ final class EngineController: ObservableObject {
         self.process = process
     }
 
+    private func launchOutpace(executable: URL, port: UInt16, ticket: UInt) throws {
+        try FileManager.default.createDirectory(at: paths.outpaceDataDirectory, withIntermediateDirectories: true)
+        if FileManager.default.fileExists(atPath: paths.outpaceLogURL.path) {
+            try FileManager.default.removeItem(at: paths.outpaceLogURL)
+        }
+        guard FileManager.default.createFile(atPath: paths.outpaceLogURL.path, contents: nil) else {
+            throw EngineControllerError.logUnavailable
+        }
+        let logHandle = try FileHandle(forWritingTo: paths.outpaceLogURL)
+        self.logHandle = logHandle
+
+        let process = Process()
+        process.executableURL = executable
+        process.arguments = ["serve"]
+        process.currentDirectoryURL = paths.outpaceDataDirectory
+        process.environment = ProcessInfo.processInfo.environment.merging([
+            "OUTPACE_BIND": "127.0.0.1:\(port)",
+            "OUTPACE_PEER_LISTEN": "0.0.0.0:0",
+            "OUTPACE_RTMP_BIND": "127.0.0.1:0",
+            "OUTPACE_DATA_DIR": paths.outpaceDataDirectory.path,
+            "OUTPACE_CACHE_TYPE": "memory",
+            "OUTPACE_ACE_COMPAT": "1",
+            "OUTPACE_ENABLE_PORT_MAPPING": "0"
+        ]) { _, new in new }
+        process.standardOutput = logHandle
+        process.standardError = logHandle
+        process.terminationHandler = { [weak self] terminatedProcess in
+            Task { @MainActor [weak self] in
+                self?.processDidExit(terminatedProcess, ticket: ticket)
+            }
+        }
+        try process.run()
+        self.process = process
+    }
+
+    private func availablePort() throws -> UInt16 {
+        let socket = Darwin.socket(AF_INET, SOCK_STREAM, 0)
+        guard socket >= 0 else { throw EngineControllerError.portUnavailable }
+        defer { _ = Darwin.close(socket) }
+
+        var address = sockaddr_in()
+        address.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
+        address.sin_family = sa_family_t(AF_INET)
+        address.sin_port = 0
+        address.sin_addr = in_addr(s_addr: inet_addr("127.0.0.1"))
+        let bindResult = withUnsafePointer(to: &address) { pointer in
+            pointer.withMemoryRebound(to: sockaddr.self, capacity: 1) { socketAddress in
+                Darwin.bind(socket, socketAddress, socklen_t(MemoryLayout<sockaddr_in>.size))
+            }
+        }
+        guard bindResult == 0 else { throw EngineControllerError.portUnavailable }
+
+        var length = socklen_t(MemoryLayout<sockaddr_in>.size)
+        let nameResult = withUnsafeMutablePointer(to: &address) { pointer in
+            pointer.withMemoryRebound(to: sockaddr.self, capacity: 1) { socketAddress in
+                Darwin.getsockname(socket, socketAddress, &length)
+            }
+        }
+        guard nameResult == 0, address.sin_port != 0 else {
+            throw EngineControllerError.portUnavailable
+        }
+        return UInt16(bigEndian: address.sin_port)
+    }
+
     private func monitorHealth(ticket: UInt, endpoint: EngineEndpoint) async {
         let startedAt = ContinuousClock.now
         var consecutiveFailures = 0
@@ -199,7 +281,7 @@ final class EngineController: ObservableObject {
                 consecutiveFailures = 0
                 status = EngineStatus(
                     phase: .ready,
-                    message: "Engine ready",
+                    message: backend == .outpace ? "Outpace ready" : "Engine ready",
                     detail: "127.0.0.1:\(endpoint.port)",
                     version: version,
                     endpoint: endpoint
@@ -228,7 +310,7 @@ final class EngineController: ObservableObject {
                 }
                 if !wasReady {
                     status.phase = .starting
-                    status.message = "Starting AceStream engine"
+                    status.message = backend == .outpace ? "Starting Outpace" : "Starting AceStream engine"
                 }
             }
 
@@ -274,7 +356,7 @@ final class EngineController: ObservableObject {
         status = EngineStatus(
             phase: .failed,
             message: "Engine process exited",
-            detail: "vfkit exit code: \(terminatedProcess.terminationStatus). Open logs in Settings › Engine.",
+            detail: "\(backend == .outpace ? "Outpace" : "vfkit") exit code: \(terminatedProcess.terminationStatus). Open logs in Settings › Engine.",
             endpoint: status.endpoint
         )
     }
@@ -387,12 +469,14 @@ private enum EngineControllerError: LocalizedError {
     case missingResources(String)
     case logUnavailable
     case socketPathTooLong
+    case portUnavailable
 
     var errorDescription: String? {
         switch self {
         case .missingResources(let message): return message
         case .logUnavailable: return "Could not create the engine log file."
         case .socketPathTooLong: return "The temporary vsock socket path is too long."
+        case .portUnavailable: return "Could not allocate a local port for Outpace."
         }
     }
 }

@@ -36,16 +36,19 @@ final class AppEnvironment: ObservableObject {
               ProcessInfo.processInfo.environment["MACESTREAM_TESTS"] != "1",
               ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil,
               NSClassFromString("XCTestCase") == nil else { return }
+        engine.backend = settings.value.engineBackend
         await engine.start()
     }
 
     func restartEngine() async {
         playback.stop()
+        engine.backend = settings.value.engineBackend
         await engine.restart()
     }
 
     func clearEngineCache() async {
         playback.stop()
+        engine.backend = settings.value.engineBackend
         await engine.clearCacheAndRestart()
     }
 
@@ -76,6 +79,7 @@ final class AppEnvironment: ObservableObject {
         let report = """
         MaceStream \(version) (\(build))
         macOS: \(ProcessInfo.processInfo.operatingSystemVersionString)
+        Backend: \(settings.value.engineBackend.title)
         Engine: \(engine.status.message)
         Engine version: \(engine.status.version ?? "—")
         Local endpoint: \(engine.status.detail ?? "—")

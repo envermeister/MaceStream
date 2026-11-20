@@ -19,6 +19,13 @@ The optional generated application bundle contains the following separate compon
 
 **Review AceStream's current license and redistribution terms before publishing a DMG that embeds the engine.** Excluding generated binaries from this repository does not grant redistribution permission for release packages. If permission is not available, distribute only the source and let each user obtain the engine under terms applicable to them.
 
+## Outpace 1.2.1 (optional, downloaded by the user)
+
+- Project and source: https://github.com/outpace-stream/outpace-engine
+- License: AGPL-3.0-or-later. See https://github.com/outpace-stream/outpace-engine/blob/v1.2.1/LICENSE
+- MaceStream does not bundle Outpace in its source repository or DMG. When the user selects the Outpace backend, the app downloads the official, architecture-matched release and verifies the archive checksum pinned in `MaceStream/Services/OutpaceInstaller.swift`.
+- Outpace runs as an independent process and communicates with MaceStream over loopback HTTP. Its source code and binary are not covered by MaceStream's MIT license.
+
 ## Minimal Linux guest
 
 The generated guest contains an Alpine Linux kernel and BusyBox userspace, plus selected Ubuntu/Python runtime files required by AceStream. These components retain their own licenses and notices. The build recipe is available in `scripts/docker/` for inspection and reproduction.

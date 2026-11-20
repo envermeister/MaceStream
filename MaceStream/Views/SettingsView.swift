@@ -17,6 +17,9 @@ struct SettingsView: View {
         .frame(width: 610, height: 480)
         .background(MaceStreamTheme.background)
         .onChange(of: settings.value) { _ in playback.applySettings() }
+        .onChange(of: settings.value.engineBackend) { _ in
+            Task { await environment.restartEngine() }
+        }
     }
 }
 
@@ -108,11 +111,33 @@ private struct PlayerSettingsTab: View {
 private struct EngineSettingsTab: View {
     @EnvironmentObject private var environment: AppEnvironment
     @EnvironmentObject private var engine: EngineController
+    @EnvironmentObject private var settings: SettingsStore
     @State private var confirmsCacheClear = false
     @State private var copiedDiagnostics = false
 
     var body: some View {
         Form {
+            Section("Engine Backend") {
+                Picker("Backend", selection: Binding(
+                    get: { settings.value.engineBackend },
+                    set: { newValue in settings.update { $0.engineBackend = newValue } }
+                )) {
+                    ForEach(EngineBackend.allCases) { backend in
+                        Text(backend.title).tag(backend)
+                    }
+                }
+                if settings.value.engineBackend == .outpace {
+                    Text("Runs natively on macOS without a VM or Rosetta. Supports public, unencrypted live streams only. The 5 MB release is downloaded from the official Outpace project and verified with SHA-256.")
+                        .font(.caption)
+                        .foregroundStyle(MaceStreamTheme.secondaryText)
+                    HStack {
+                        Link("Source code", destination: OutpaceRelease.projectURL)
+                        Link("AGPL-3.0-or-later", destination: OutpaceRelease.licenseURL)
+                    }
+                    .font(.caption)
+                }
+            }
+
             Section {
                 HStack(spacing: 12) {
                     Image(systemName: engine.status.isReady ? "checkmark.circle.fill" : "exclamationmark.circle.fill")
@@ -130,8 +155,13 @@ private struct EngineSettingsTab: View {
                 .padding(.vertical, 4)
 
                 LabeledContent("Engine version", value: engine.status.version ?? "—")
-                LabeledContent("Virtual machine", value: "Linux · 2 CPU · 512 MB")
-                LabeledContent("Local transport", value: "127.0.0.1 + virtio-vsock · Random available port")
+                if settings.value.engineBackend == .official {
+                    LabeledContent("Virtual machine", value: "Linux · 2 CPU · 512 MB")
+                    LabeledContent("Local transport", value: "127.0.0.1 + virtio-vsock · Random available port")
+                } else {
+                    LabeledContent("Runtime", value: "Native macOS process · No VM or Rosetta")
+                    LabeledContent("Local transport", value: "127.0.0.1 HTTP · Random available port")
+                }
 
                 HStack {
                     Button("Restart") {
@@ -147,9 +177,11 @@ private struct EngineSettingsTab: View {
                     }
                 }
             } header: {
-                Text("Embedded AceStream engine")
+                Text(settings.value.engineBackend == .official ? "Embedded AceStream engine" : "Outpace engine")
             } footer: {
-                Text("Restarting stops the active stream. MaceStream only shuts down the VM it started and leaves other AceStream processes untouched.")
+                Text(settings.value.engineBackend == .official
+                     ? "Restarting stops the active stream. MaceStream only shuts down the VM it started and leaves other AceStream processes untouched."
+                     : "Restarting stops the active stream. MaceStream only shuts down the Outpace process it started. Outpace is a separate AGPL-licensed project and is not included in the MaceStream package.")
                     .font(.caption)
                     .foregroundStyle(MaceStreamTheme.secondaryText)
             }

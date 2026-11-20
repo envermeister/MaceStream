@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/macOS-13%2B-black?logo=apple" alt="macOS 13+">
   <img src="https://img.shields.io/badge/Swift-native-F05138?logo=swift&logoColor=white" alt="Swift native">
   <img src="https://img.shields.io/badge/ARM64%20%2B%20x86__64-universal-blue" alt="Universal binary">
-  <img src="https://img.shields.io/badge/tests-28%20passed-brightgreen" alt="28 tests passed">
+  <img src="https://img.shields.io/badge/tests-32%20passed-brightgreen" alt="32 tests passed">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
   <a href="https://buymeacoffee.com/envermeister"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support%20MaceStream-FFDD00?logo=buy-me-a-coffee&logoColor=black" alt="Support on Buy Me a Coffee"></a>
   <a href="https://ko-fi.com/envermeister"><img src="https://img.shields.io/badge/Ko--fi-support%20MaceStream-F16061?logo=ko-fi&logoColor=white" alt="Support on Ko-fi"></a>
@@ -64,6 +64,12 @@ The interface is SwiftUI and AppKit. Video is rendered through `AVPlayerLayer`, 
 A minimal Linux guest runs the official AceStream engine through vfkit. Apple Silicon and Intel receive separate, correctly matched guest kernels in one universal package. The app selects the right guest automatically and shuts down only the VM it owns.
 
 API and playback traffic uses **virtio-vsock**, not fragile host-to-guest IP routing. NAT remains available for the engine's outbound peer-to-peer traffic. Your Mac never has to surrender a fixed port or tolerate another process being killed.
+
+### Optional native Outpace backend
+
+Choose **Outpace** in Settings › Engine to run the open-source [Outpace engine](https://github.com/outpace-stream/outpace-engine) directly on macOS without a Linux VM, vfkit, virtio-vsock, or Rosetta. MaceStream downloads the pinned Outpace 1.2.1 release for your Mac architecture, verifies its SHA-256 checksum, and starts it as a separate loopback-only backend process. The existing Swift MPEG-TS segmentation and AVFoundation pipeline stays unchanged.
+
+The official AceStream engine remains the default and is still required for encrypted or premium sources. Outpace supports public, unencrypted live streams only. Outpace is an independent AGPL-3.0-or-later project; its binary and source code are not bundled in the MaceStream DMG. Source and license links are available in Settings.
 
 ### Buffer controls without the marketing fiction
 
@@ -117,7 +123,7 @@ For playback, MaceStream bypasses the engine's unreliable HLS generator. It read
 
 - **macOS 13 Ventura or later**
 - Apple Silicon or Intel Mac
-- Rosetta on Apple Silicon for the official x86_64 AceStream engine
+- Rosetta on Apple Silicon when using the official x86_64 AceStream engine (not needed for Outpace)
 
 AceStream sources vary. A stream using a codec or container unsupported by AVFoundation may fail even when the engine is healthy. MaceStream deliberately uses **AVFoundation only**, not libmpv or VLCKit.
 
